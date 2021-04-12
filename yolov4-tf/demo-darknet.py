@@ -66,7 +66,7 @@ except:
 while True:
     # read the next frame from the file
     (grabbed, frame) = vs.read()
-    frame = cv2.resize(frame, (400, 400))
+    frame = cv2.resize(frame, (224, 224))
 
     # if the frame was not grabbed, then we have reached the end
     # of the stream

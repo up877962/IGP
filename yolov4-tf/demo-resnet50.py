@@ -6,7 +6,11 @@ import numpy as np
 
 
 model = ResNet50(weights='imagenet')
+
+# webcam
 # cap = cv2.VideoCapture(0)
+
+# video file
 cap = cv2.VideoCapture('./SAMPLE.mp4')
 
 if not cap.isOpened():
