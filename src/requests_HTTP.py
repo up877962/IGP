@@ -6,7 +6,7 @@ import urllib.parse
 
 config = yaml.safe_load(open("./config.yaml"))
 
-serverAddress = config['network']['server']['protocol'] + '://' + config['network']['server']['domain'] + ':' + str(config['network']['server']['port']) 
+serverAddress = config['network']['server']['domain'] + ':' + str(config['network']['server']['port']) 
 
 def login():
     global token
@@ -34,16 +34,19 @@ def addNewVehicle(identifier):
     # decode identifier string...
     params = urllib.parse.urlencode({'identifier': identifier, 'entrance_id': 'id0', 'entrance_time': 0, 'exit_id': 'id0', 'exit_time': 1})
 
-    conn = http.client.HTTPConnection(serverAddress)
+    if(config['network']['server']['protocol'] == 'https'):
+        conn = http.client.HTTPSConnection(serverAddress)
+    else:
+        conn = http.client.HTTPConnection(serverAddress)
 
-    conn.request('POST', '/api/vehicle', params, {'authorization': f'Bearer {token}'})
+    conn.request('POST', f'/api/vehicle?{params}', headers={'authorization': f'Bearer {token}'})
 
     res = conn.getresponse()
-    print(res) 
+    print(res.status) 
 
 def main():
     login()
 
-    #addNewVehicle("nothing")
+    addNewVehicle("nothing")
 
 main()
