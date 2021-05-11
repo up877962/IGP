@@ -1,0 +1,2 @@
+#!/bin/bash
+python detect_video.py --video $1 --weights ./checkpoints/yolov3-tiny.tf --tiny

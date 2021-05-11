@@ -1,5 +1,7 @@
-*.yaml
 config.*
 __pycache__/
 *.pyc
 *.pyo
+*.mp4
+*.weights
+*.yaml
