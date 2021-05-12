@@ -32,7 +32,7 @@ def login():
 # adds a new vehicle record to web server db
 def addNewVehicle(identifier):
     # decode identifier string...
-    params = urllib.parse.urlencode({'identifier': identifier, 'entrance_id': 'id0', 'entrance_time': 0, 'exit_id': 'id0', 'exit_time': 1})
+    params = urllib.parse.urlencode({'identifier': identifier, 'entrance_id': 'id0', 'entrance_time': 0, 'exit_id': 'id1', 'exit_time': 1})
 
     if(config['network']['server']['protocol'] == 'https'):
         conn = http.client.HTTPSConnection(serverAddress)
@@ -44,6 +44,7 @@ def addNewVehicle(identifier):
     res = conn.getresponse()
     print(res.status) 
 
+# demo
 def main():
     login()
 
