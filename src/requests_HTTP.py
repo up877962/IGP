@@ -1,10 +1,10 @@
 # functions todo with making HTTP requests
 import yaml
 import json
-import http.client
-import urllib.parse
+import httplib
+import urllib
 
-config = yaml.safe_load(open("./config.yaml"))
+config = yaml.safe_load(open("../config.yaml"))
 
 serverAddress = config['network']['server']['domain'] + ':' + str(config['network']['server']['port']) 
 
@@ -21,7 +21,7 @@ def login():
     audience = config['auth']['API']['audience']
 
     # connect to domain
-    conn = http.client.HTTPSConnection(clientDomain)
+    conn = httplib.HTTPSConnection(clientDomain)
     # form request
     payload = '{"client_id":"' + clientID + '","client_secret":"' + clientSecret + '","audience":"' + audience  + '","grant_type":"client_credentials"}'
     headers = {'content-type': "application/json"}
@@ -38,7 +38,7 @@ def login():
 ###
 def addNewVehicle(identifier):
     # decode identifier string...
-    params = urllib.parse.urlencode({
+    params = urllib.urlencode({
         'identifier': identifier, 
         'entrance_id': 'id0',
         'entrance_time': 0,
@@ -47,11 +47,11 @@ def addNewVehicle(identifier):
     })
 
     if(config['network']['server']['protocol'] == 'https'):
-        conn = http.client.HTTPSConnection(serverAddress)
+        conn = httplib.HTTPSConnection(serverAddress)
     else:
-        conn = http.client.HTTPConnection(serverAddress)
+	conn = httplib.HTTPConnection(serverAddress)
 
-    conn.request('POST', f'/api/vehicle?{params}', headers={'authorization': f'Bearer {token}'})
+    conn.request('POST', '/api/vehicle?' + params, headers={'authorization': 'Bearer ' + token})
 
     res = conn.getresponse()
     print(res.status) 
@@ -65,20 +65,21 @@ def addNewVehicle(identifier):
 # @param {double} y coord of top left of bounding box
 ###
 def updateBoundingBox(id, height, width, x, y):
-    params = urllib.parse.urlencode({
-        id: id,
-        height: height,
-        width: width,
-        x: x,
-        y: y
+    params = urllib.urlencode({
+        'id': id,
+        'height': height,
+        'width': width,
+        'x': x,
+        'y': y
     })
+    print(params)
 
     if(config['network']['server']['protocol'] == 'https'):
-        conn = http.client.HTTPSConnection(serverAddress)
+        conn = httplib.HTTPSConnection(serverAddress)
     else:
-        conn = http.client.HTTPConnection(serverAddress)
+        conn = httplib.HTTPConnection(serverAddress)
 
-    conn.request('POST', f'/api/vehicle/boundingbox?{params}', headers={'authorization': f'Bearer {token}'})
+    conn.request('POST', '/api/vehicle/boundingbox?' + params, headers={'authorization': 'Bearer ' + token})
 
     res = conn.getresponse()
     print(res.status)
@@ -87,6 +88,7 @@ def updateBoundingBox(id, height, width, x, y):
 def main():
     login()
 
+    #print(token)
     #addNewVehicle("nothing")
     updateBoundingBox('id0', 80, 60, 540.52, 120.28)
 
