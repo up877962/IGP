@@ -49,15 +49,14 @@ def openConnection():
 # adds a new vehicle record to web server db
 # @param {string} identifer of vehicle, decoded for vehicle record info
 ###
-def addNewVehicle(identifier, token):
+def addNewVehicle(token, identifier, entrance_id, entrance_time, exit_id, exit_time):
     # decode identifier string...
     params = urllib.parse.urlencode({
-    #params = urllib.urlencode({
         'identifier': identifier,
-        'entrance_id': 'id0',
-        'entrance_time': 0,
-        'exit_id': 'id1',
-        'exit_time': 1
+        'entrance_id': entrance_id,
+        'entrance_time': entrance_time,
+        'exit_id': exit_id,
+        'exit_time': exit_time
     })
 
     conn = openConnection()
@@ -75,10 +74,12 @@ def addNewVehicle(identifier, token):
 # @param {double} x coord of top left of bounding box
 # @param {double} y coord of top left of bounding box
 ###
-def updateBoundingBox(id, height, width, x, y, token):
+def updateBoundingBox(token, id, sourceHeight, sourceWidth, timestamp, height, width, x, y):
     params = urllib.parse.urlencode({
-    #params = urllib.urlencode({
         'id': id,
+	'sourceHeight': sourceHeight,
+	'sourceWidth': sourceWidth,
+        'timestamp': timestamp,
         'height': height,
         'width': width,
         'x': x,
@@ -98,7 +99,7 @@ def demo():
 
     print(token)
     addNewVehicle("nothing", token)
-    updateBoundingBox('id0', 80, 60, 540.52, 120.28, token)
+    #updateBoundingBox('id0', 80, 60, 540.52, 120.28, token)
 
-demo()
+#demo()
 
